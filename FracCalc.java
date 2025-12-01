@@ -15,7 +15,7 @@ public class FracCalc {
    // the mathematical operation on fractions. or, quit.
    // DO NOT CHANGE THIS METHOD!!
    public static void main(String[] args) {
-   
+      
       // initialize to false so that we start our loop
       boolean done = false;
       
@@ -45,7 +45,9 @@ public class FracCalc {
    // Return the full line that the user typed in.
    public static String getInput() {
       // TODO: Implement this method
-       return "quit";
+      Scanner console = new Scanner(System.in);
+      String input = console.next();
+      return input;
 
    }
    
@@ -81,8 +83,8 @@ public class FracCalc {
    //        2 1/4
    public static String processExpression(String input) {
       // TODO: implement this method!
-    
-        return "reduced result of expression";
+      
+        return input;
 
    }
    

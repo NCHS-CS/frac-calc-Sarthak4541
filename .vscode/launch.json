@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FracCalc",
+            "request": "launch",
+            "mainClass": "FracCalc",
+            "projectName": "frac-calc-Sarthak4541_1c78d905"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
