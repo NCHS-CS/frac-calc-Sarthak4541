@@ -1,10 +1,12 @@
-// Student Name
-// Period X
+// Sarthak Kansal
+// Period 6
 // Fraction Calculator Project
 
 import java.util.*;
 
-// TODO: Description of what this program does goes here.
+// This is a fraction calculator that can perform arithmetic operations. The user will type in
+// two numbers with an operator and the program will perform the math and output the answer
+
 public class FracCalc {
 
    // It is best if we have only one console object for input
@@ -44,9 +46,10 @@ public class FracCalc {
    // Prompt the user with a simple, "Enter: " and get the line of input.
    // Return the full line that the user typed in.
    public static String getInput() {
-      // TODO: Implement this method
+      
       Scanner console = new Scanner(System.in);
-      String input = console.next();
+      System.out.println("Enter: ");
+      String input = console.nextLine();
       return input;
 
    }
@@ -93,8 +96,8 @@ public class FracCalc {
    public static String provideHelp() {
       // TODO: Update this help text!
      
-      String help = "You must change this text.\n";
-      help += "Students, you need to provide actual helpful text here!";
+      String help = "Enter 2 numbers seperated by an arithmetic operator \n";
+      help += "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc.";
       
       return help;
    }
