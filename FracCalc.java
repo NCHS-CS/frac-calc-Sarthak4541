@@ -86,10 +86,51 @@ public class FracCalc {
    //        2 1/4
    public static String processExpression(String input) {
       // TODO: implement this method!
-      
-        return input;
+         int space1 = input.indexOf(" ");
+         String second_part = input.substring(space1+1);
+         int space2 = second_part.indexOf(" ");
+         String operator = input.charAt(space1+1) + "";
+         String second_number = second_part.substring(space2+1);
+
+         String whole;
+         String num;
+         String den;
+
+         int underscoreIndex = second_number.indexOf("_");
+         int division = second_number.indexOf("/");
+
+         if (underscoreIndex>=0){
+            whole = second_number.substring(0,underscoreIndex);
+            num = second_number.substring(underscoreIndex+1, division);
+            den = second_number.substring(division+1);
+         }
+         else if (division>=0){
+            whole = "0";
+            num = second_number.substring(0, division);
+            den = second_number.substring(division+1);
+         }
+         else{
+            whole = second_number;
+            num = "0";
+            den = "1";
+         }
+
+         if (Integer.parseInt(num)<0 && Integer.parseInt(den)<0){
+            
+            num = Integer.parseInt(num)*-1 + "";
+            den = Integer.parseInt(den)*-1 + "";
+         }
+         else if (Integer.parseInt(den)<0){
+            num = "-"+num;
+            den = "-" + den;
+         }
+
+        // return input is the description of the SECOND number
+        // parsed into four parts: operator, whole number, numerator, and denominator.
+         return "Op:" + operator + " Whole:" + whole + " Num:" + num + " Den:" + den; 
 
    }
+
    
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
