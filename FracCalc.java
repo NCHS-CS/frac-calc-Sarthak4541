@@ -17,7 +17,7 @@ public class FracCalc {
    // the mathematical operation on fractions. or, quit.
    // DO NOT CHANGE THIS METHOD!!
    public static void main(String[] args) {
-      
+
       // initialize to false so that we start our loop
       boolean done = false;
       
@@ -85,7 +85,8 @@ public class FracCalc {
    //        2 1/8
    //        2 1/4
    public static String processExpression(String input) {
-      // TODO: implement this method!
+      
+   
          int space1 = input.indexOf(" ");
          String second_part = input.substring(space1+1);
          int space2 = second_part.indexOf(" ");
@@ -99,21 +100,24 @@ public class FracCalc {
          int underscoreIndex = second_number.indexOf("_");
          int division = second_number.indexOf("/");
 
-         if (underscoreIndex>=0){
+         if (underscoreIndex>=0){//mixed number
             whole = second_number.substring(0,underscoreIndex);
             num = second_number.substring(underscoreIndex+1, division);
             den = second_number.substring(division+1);
          }
-         else if (division>=0){
+         else if (division>=0){//fraction
             whole = "0";
             num = second_number.substring(0, division);
             den = second_number.substring(division+1);
          }
-         else{
+         else{ 
             whole = second_number;
             num = "0";
             den = "1";
          }
+         getWhole(whole, second_number, underscoreIndex, division);
+         getNum(num, second_number, underscoreIndex, division);
+         getDen(den, second_number, underscoreIndex, division);
 
          if (Integer.parseInt(num)<0 && Integer.parseInt(den)<0){
             
@@ -130,12 +134,68 @@ public class FracCalc {
          return "Op:" + operator + " Whole:" + whole + " Num:" + num + " Den:" + den; 
 
    }
+   public static int getWhole(String whole, String second_number, int underscoreIndex, int division){
+           if (underscoreIndex>=0){//mixed number
+            whole = second_number.substring(0,underscoreIndex);
+         }
+         else if (division>=0){//fraction
+            whole = "0";
+         }
+         else{ 
+            whole = second_number;
+         }
+         return Integer.parseInt(whole);
+      } 
+
+   public static int getNum(String num, String second_number, int underscoreIndex, int division){
+      if (underscoreIndex>=0){//mixed number
+            num = second_number.substring(underscoreIndex+1, division);
+
+         }
+         else if (division>=0){//fraction
+            num = second_number.substring(0, division);
+         }
+         else{ 
+            num = "0";
+         }
+
+         return Integer.parseInt(num);
+      }
+      
+   public static int getDen(String den, String second_number, int underscoreIndex, int division){
+      if (underscoreIndex>=0){//mixed number
+            den = second_number.substring(division+1);
+         }
+         else if (division>=0){//fraction
+            den = second_number.substring(division+1);
+         }
+         else{ 
+            den = "1";
+         }
+
+         return Integer.parseInt(den);
+      } 
+
+   
+      public static int getGCD(int a, int b){
+         int gcf = 1;
+      for (int i=1; i>=Math.min(a,b); i++){
+         if (a%i == b%i && a%i == 0){
+            gcf = i;
+         }
+      }
+      return a * b / gcf;
+   }
+
+   public static void getImproperFrac(String a, String b){
+      
+   }
 
    
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
-      // TODO: Update this help text!
+   
      
       String help = "Enter 2 numbers seperated by an arithmetic operator \n";
       help += "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc.";
