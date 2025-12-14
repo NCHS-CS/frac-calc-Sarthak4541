@@ -47,10 +47,8 @@ public class FracCalc {
    // Return the full line that the user typed in.
    public static String getInput() {
       
-      Scanner console = new Scanner(System.in);
       System.out.println("Enter: ");
-      String input = console.nextLine();
-      return input;
+      return console.nextLine();
 
    }
    
@@ -91,100 +89,135 @@ public class FracCalc {
          String second_part = input.substring(space1+1);
          int space2 = second_part.indexOf(" ");
          String operator = input.charAt(space1+1) + "";
+         String first_number = input.substring(0,space1);
          String second_number = second_part.substring(space2+1);
 
-         String whole;
-         String num;
-         String den;
+         int whole1 = getWhole(first_number);
+         int num1 = getNum(first_number);
+         int den1 = getDen(first_number);
 
-         int underscoreIndex = second_number.indexOf("_");
-         int division = second_number.indexOf("/");
+         int whole2 = getWhole(second_number);
+         int num2 = getNum(second_number);
+         int den2 = getDen(second_number);
 
-         if (underscoreIndex>=0){//mixed number
-            whole = second_number.substring(0,underscoreIndex);
-            num = second_number.substring(underscoreIndex+1, division);
-            den = second_number.substring(division+1);
-         }
-         else if (division>=0){//fraction
-            whole = "0";
-            num = second_number.substring(0, division);
-            den = second_number.substring(division+1);
-         }
-         else{ 
-            whole = second_number;
-            num = "0";
-            den = "1";
-         }
-         getWhole(whole, second_number, underscoreIndex, division);
-         getNum(num, second_number, underscoreIndex, division);
-         getDen(den, second_number, underscoreIndex, division);
+         int improper_num1 = 0;
+         int improper_num2 = 0;
 
-         if (Integer.parseInt(num)<0 && Integer.parseInt(den)<0){
-            
-            num = Integer.parseInt(num)*-1 + "";
-            den = Integer.parseInt(den)*-1 + "";
+         improper_num1 = Math.abs(whole1) * den1 + Math.abs(num1);
+         if ((whole1<0) || first_number.startsWith("-")){
+            improper_num1 *=-1;
          }
-         else if (Integer.parseInt(den)<0){
-            num = "-"+num;
-            den = "-" + den;
+         if (num1<0 && whole1 == 0){
+            improper_num1 = Math.abs(num1) * -1;
          }
+         if (den1<0){
+            improper_num1 *=-1;
+            den1 *=-1;
+         }
+
+         improper_num2 = Math.abs(whole2) * den1 + Math.abs(num2);
+         if ((whole2<0) || second_number.startsWith("-")){
+            improper_num2 *=-1;
+         }
+         if (num2<0 && whole2 == 0){
+            improper_num2 = Math.abs(num2) * -1;
+         }
+         if (den2<0){
+            improper_num2 *=-1;
+            den2 *=-1;
+         }
+         
+
+         int finalNum = 0;
+         int finalDen = 0;
+
+         if (operator.equals("+")){
+            finalNum = improper_num1 * den2 + improper_num2 * den1;
+            finalDen = den1 * den2;
+         }
+
+         if (finalNum==0){
+            return "0";
+         }
+
+         int lcd = getLCD(Math.abs(finalNum), finalDen);
+         if (lcd==0){
+            lcd = 1;
+         }
+
+         if (finalDen !=1 && lcd !=0){
+         finalNum = finalNum/lcd;
+         finalDen = finalDen/lcd;
+         }
+         
+         int whole = finalNum/finalDen;
+         int remainder = Math.abs(finalNum)%finalDen;
+
+         if (remainder==0){
+            return whole + "";
+         }
+         else if (whole==0){
+
+            if (finalNum<0){
+            return "-" + remainder + "/" + finalDen;
+            }
+            else{
+            return remainder + "/" + finalDen;
+            }
+         }
+         else{
+            return whole + " " + remainder + "/" + finalDen;
+         }
+   
+         
 
         // return input is the description of the SECOND number
         // parsed into four parts: operator, whole number, numerator, and denominator.
-         return "Op:" + operator + " Whole:" + whole + " Num:" + num + " Den:" + den; 
+         //return "Op:" + operator + " Whole:" + whole + " Num:" + num + " Den:" + den; 
 
    }
-   public static int getWhole(String whole, String second_number, int underscoreIndex, int division){
-           if (underscoreIndex>=0){//mixed number
-            whole = second_number.substring(0,underscoreIndex);
-         }
-         else if (division>=0){//fraction
-            whole = "0";
-         }
-         else{ 
-            whole = second_number;
-         }
-         return Integer.parseInt(whole);
-      } 
-
-   public static int getNum(String num, String second_number, int underscoreIndex, int division){
-      if (underscoreIndex>=0){//mixed number
-            num = second_number.substring(underscoreIndex+1, division);
-
-         }
-         else if (division>=0){//fraction
-            num = second_number.substring(0, division);
-         }
-         else{ 
-            num = "0";
-         }
-
-         return Integer.parseInt(num);
+   public static int getWhole(String second_number){
+      if (second_number.indexOf("_")>=0){//mixed number
+         return Integer.parseInt(second_number.substring(0,second_number.indexOf("_")));
       }
-      
-   public static int getDen(String den, String second_number, int underscoreIndex, int division){
-      if (underscoreIndex>=0){//mixed number
-            den = second_number.substring(division+1);
-         }
-         else if (division>=0){//fraction
-            den = second_number.substring(division+1);
-         }
-         else{ 
-            den = "1";
-         }
+      else if (second_number.indexOf("/")>=0){//fraction
+         return 0;
+      }
+      else{ 
+         return Integer.parseInt(second_number);
+      }
+   } 
 
-         return Integer.parseInt(den);
-      } 
+   public static int getNum(String second_number){
+      if (second_number.indexOf("_")>=0){//mixed number
+         return Integer.parseInt(second_number.substring(second_number.indexOf("_")+1,second_number.indexOf("/")));
+      }
+      else if (second_number.indexOf("/")>=0){//fraction
+         return Integer.parseInt(second_number.substring(0, second_number.indexOf("/")));
+      }
+      else{ 
+         return 0;
+      }
+   }
+      
+   public static int getDen(String second_number){
+      if (second_number.indexOf("/")>=0){
+         return Integer.parseInt(second_number.substring(second_number.indexOf("/")+1));
+      }
+      else{
+         return 1;
+      }
+   } 
 
    
-      public static int getGCD(int a, int b){
+      public static int getLCD(int a, int b){
          int gcf = 1;
-      for (int i=1; i>=Math.min(a,b); i++){
-         if (a%i == b%i && a%i == 0){
+      for (int i=1; i<=Math.min(a,b); i++){
+         if (a%i == 0 && b%i == 0){
             gcf = i;
          }
       }
-      return a * b / gcf;
+      return gcf;
    }
 
    public static void getImproperFrac(String a, String b){
