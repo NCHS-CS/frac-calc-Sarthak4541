@@ -38,7 +38,7 @@ public class FracCalc {
             System.out.println(result);
          }
       }
-      
+      // if the user types in "quit", it closes the program
       System.out.println("Goodbye!");
       console.close();
    }
@@ -92,48 +92,24 @@ public class FracCalc {
          String first_number = input.substring(0,space1);
          String second_number = second_part.substring(space2+1);
 
-         int whole1 = getWhole(first_number);
-         int num1 = getNum(first_number);
-         int den1 = getDen(first_number);
+         String frac1 = getImproperFrac(first_number);
+         String frac2 = getImproperFrac(second_number);
 
-         int whole2 = getWhole(second_number);
-         int num2 = getNum(second_number);
-         int den2 = getDen(second_number);
+         int improper_num1 = Integer.parseInt(frac1.substring(0,frac1.indexOf("/")));
+         int improper_num2 = Integer.parseInt(frac2.substring(0,frac2.indexOf("/")));
 
-         int improper_num1 = 0;
-         int improper_num2 = 0;
-
-         improper_num1 = Math.abs(whole1) * den1 + Math.abs(num1);
-         if ((whole1<0) || first_number.startsWith("-")){
-            improper_num1 *=-1;
-         }
-         if (num1<0 && whole1 == 0){
-            improper_num1 = Math.abs(num1) * -1;
-         }
-         if (den1<0){
-            improper_num1 *=-1;
-            den1 *=-1;
-         }
-
-         improper_num2 = Math.abs(whole2) * den1 + Math.abs(num2);
-         if ((whole2<0) || second_number.startsWith("-")){
-            improper_num2 *=-1;
-         }
-         if (num2<0 && whole2 == 0){
-            improper_num2 = Math.abs(num2) * -1;
-         }
-         if (den2<0){
-            improper_num2 *=-1;
-            den2 *=-1;
-         }
+         int den1 = Integer.parseInt(frac1.substring(frac1.indexOf("/") + 1));
+         int den2 = Integer.parseInt(frac2.substring(frac2.indexOf("/") + 1));
          
 
-         int finalNum = 0;
-         int finalDen = 0;
+         String resultFrac = performOperations(improper_num1, improper_num2, den1, den2, operator);
 
-         if (operator.equals("+")){
-            finalNum = improper_num1 * den2 + improper_num2 * den1;
-            finalDen = den1 * den2;
+         int finalNum = Integer.parseInt(resultFrac.substring(0, resultFrac.indexOf("/")));
+         int finalDen = Integer.parseInt(resultFrac.substring(resultFrac.indexOf("/") + 1));
+
+         if (finalDen<0 && finalNum<0){
+            finalDen*=-1;
+            finalNum*=-1;
          }
 
          if (finalNum==0){
@@ -168,12 +144,6 @@ public class FracCalc {
          else{
             return whole + " " + remainder + "/" + finalDen;
          }
-   
-         
-
-        // return input is the description of the SECOND number
-        // parsed into four parts: operator, whole number, numerator, and denominator.
-         //return "Op:" + operator + " Whole:" + whole + " Num:" + num + " Den:" + den; 
 
    }
    public static int getWhole(String second_number){
@@ -210,8 +180,8 @@ public class FracCalc {
    } 
 
    
-      public static int getLCD(int a, int b){
-         int gcf = 1;
+   public static int getLCD(int a, int b){
+      int gcf = 1;
       for (int i=1; i<=Math.min(a,b); i++){
          if (a%i == 0 && b%i == 0){
             gcf = i;
@@ -220,8 +190,50 @@ public class FracCalc {
       return gcf;
    }
 
-   public static void getImproperFrac(String a, String b){
+   public static String getImproperFrac(String output){
+      int whole = getWhole(output);
+      int num = getNum(output);
+      int den = getDen(output);
+
+      int improperNum = Math.abs(whole) * den + Math.abs(num);
+
+      if (whole<0 || output.startsWith("-")){
+         improperNum *=-1;
+      }
       
+      if (whole==0 && num < 0){
+         improperNum = Math.abs(num) * -1;
+      }
+
+      if (den < 0){
+         den *=-1;
+         improperNum *=-1;
+      }
+
+      return improperNum + "/" + den;
+   }
+
+   public static String performOperations(int num1, int num2, int den1, int den2, String operator){
+      
+      int num;
+      int den;
+
+      if (operator.equals("+")){
+         num = num1 * den2 + num2 * den1;
+         den = den1 * den2;
+      } else if (operator.equals("-")){
+         num = num1 * den2 - num2 * den1;
+         den = den1 * den2;
+      } else if (operator.equals("*")){
+         num = num1 * num2;
+         den = den1 * den2;
+      } else{
+         num = num1 * den2;
+         den = den1 * num2;
+      }
+
+      return num + "/" + den;
+
    }
 
    
@@ -231,7 +243,7 @@ public class FracCalc {
    
      
       String help = "Enter 2 numbers seperated by an arithmetic operator \n";
-      help += "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc.";
+      help += "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc. For example, -2_1/4 + 2_1/2.";
       
       return help;
    }
