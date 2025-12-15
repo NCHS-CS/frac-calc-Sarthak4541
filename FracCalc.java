@@ -83,69 +83,27 @@ public class FracCalc {
    //        2 1/8
    //        2 1/4
    public static String processExpression(String input) {
-      
-   
-         int space1 = input.indexOf(" ");
-         String second_part = input.substring(space1+1);
-         int space2 = second_part.indexOf(" ");
-         String operator = input.charAt(space1+1) + "";
-         String first_number = input.substring(0,space1);
-         String second_number = second_part.substring(space2+1);
+    String first_number = getFirstNumber(input);
+    String operator = getOperator(input);
+    String second_number = getSecondNumber(input);
 
-         String frac1 = getImproperFrac(first_number);
-         String frac2 = getImproperFrac(second_number);
+    String frac1 = getImproperFrac(first_number);
+    String frac2 = getImproperFrac(second_number);
 
-         int improper_num1 = Integer.parseInt(frac1.substring(0,frac1.indexOf("/")));
-         int improper_num2 = Integer.parseInt(frac2.substring(0,frac2.indexOf("/")));
+    int improper_num1 = getNumerator(frac1);
+    int improper_num2 = getNumerator(frac2);
 
-         int den1 = Integer.parseInt(frac1.substring(frac1.indexOf("/") + 1));
-         int den2 = Integer.parseInt(frac2.substring(frac2.indexOf("/") + 1));
-         
+    int den1 = getDenominator(frac1);
+    int den2 = getDenominator(frac2);
 
-         String resultFrac = performOperations(improper_num1, improper_num2, den1, den2, operator);
+    String resultFrac = performOperations(improper_num1, improper_num2, den1, den2, operator);
 
-         int finalNum = Integer.parseInt(resultFrac.substring(0, resultFrac.indexOf("/")));
-         int finalDen = Integer.parseInt(resultFrac.substring(resultFrac.indexOf("/") + 1));
+    int finalNum = getNumerator(resultFrac);
+    int finalDen = getDenominator(resultFrac);
 
-         if (finalDen<0 && finalNum<0){
-            finalDen*=-1;
-            finalNum*=-1;
-         }
-
-         if (finalNum==0){
-            return "0";
-         }
-
-         int lcd = getLCD(Math.abs(finalNum), finalDen);
-         if (lcd==0){
-            lcd = 1;
-         }
-
-         if (finalDen !=1 && lcd !=0){
-         finalNum = finalNum/lcd;
-         finalDen = finalDen/lcd;
-         }
-         
-         int whole = finalNum/finalDen;
-         int remainder = Math.abs(finalNum)%finalDen;
-
-         if (remainder==0){
-            return whole + "";
-         }
-         else if (whole==0){
-
-            if (finalNum<0){
-            return "-" + remainder + "/" + finalDen;
-            }
-            else{
-            return remainder + "/" + finalDen;
-            }
-         }
-         else{
-            return whole + " " + remainder + "/" + finalDen;
-         }
-
+    return formatFraction(finalNum, finalDen);
    }
+
    public static int getWhole(String second_number){
       if (second_number.indexOf("_")>=0){//mixed number
          return Integer.parseInt(second_number.substring(0,second_number.indexOf("_")));
@@ -180,7 +138,7 @@ public class FracCalc {
    } 
 
    
-   public static int getLCD(int a, int b){
+   public static int getGCF(int a, int b){
       int gcf = 1;
       for (int i=1; i<=Math.min(a,b); i++){
          if (a%i == 0 && b%i == 0){
@@ -195,21 +153,21 @@ public class FracCalc {
       int num = getNum(output);
       int den = getDen(output);
 
-      int improperNum = Math.abs(whole) * den + Math.abs(num);
+      if (den==0){
+         return "0/0";
+      }
 
-      if (whole<0 || output.startsWith("-")){
+      int improperNum = Math.abs(whole) * den + num;
+
+      if (whole<0){
+         improperNum *=-1;
+      } 
+
+      if (den<0){
+         den*=-1;
          improperNum *=-1;
       }
       
-      if (whole==0 && num < 0){
-         improperNum = Math.abs(num) * -1;
-      }
-
-      if (den < 0){
-         den *=-1;
-         improperNum *=-1;
-      }
-
       return improperNum + "/" + den;
    }
 
@@ -228,12 +186,86 @@ public class FracCalc {
          num = num1 * num2;
          den = den1 * den2;
       } else{
+         if (num2==0){
+            return "0/0";
+         }
          num = num1 * den2;
          den = den1 * num2;
       }
-
       return num + "/" + den;
+   }
 
+   public static String getOperator(String input){
+      int space1 = input.indexOf(" ");
+      return input.substring(space1 + 1, space1 + 2);
+
+   }
+
+   public static String getFirstNumber(String input){
+      int space1 = input.indexOf(" ");
+      return input.substring(0, space1);
+   }
+
+   public static String getSecondNumber(String input){
+      int space1 = input.indexOf(" ");
+      
+      int space2 = space1 + 1;
+      while (space2 < input.length() && input.charAt(space2) != ' ') {
+         space2++;
+      }
+
+      return input.substring(space2 + 1);
+   }
+
+   public static int getNumerator(String frac) {
+      return Integer.parseInt(frac.substring(0, frac.indexOf("/")));
+   }
+
+   public static int getDenominator(String frac) {
+      return Integer.parseInt(frac.substring(frac.indexOf("/") + 1));
+   }
+   
+   public static String formatFraction(int finalNum, int finalDen) {
+
+    if (finalDen == 0) {
+        return "ERROR: Division by zero";
+    }
+    if (finalNum == 0) {
+        return "0";
+    }
+    if (finalDen < 0) {
+        finalDen *= -1;
+        finalNum *= -1;
+    }
+
+    int gcf = getGCF(Math.abs(finalNum), Math.abs(finalDen));
+    finalNum /= gcf;
+    finalDen /= gcf;
+
+    int whole = finalNum / finalDen;
+    int remainder = Math.abs(finalNum) % finalDen;
+
+    String output = handleEdgeCases(whole, remainder, finalDen, finalNum);
+
+    return output;
+    
+   }
+
+   public static String handleEdgeCases(int whole, int remainder, int finalDen, int finalNum) {
+      
+      if (remainder == 0) {
+         return whole + "";
+      }
+
+      if (whole == 0) {
+         if (finalNum < 0) {
+               return "-" + remainder + "/" + finalDen;
+         } else {
+               return remainder + "/" + finalDen;
+         }
+      }
+
+      return whole + " " + remainder + "/" + finalDen;
    }
 
    
