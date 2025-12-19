@@ -449,4 +449,3 @@ public class FracCalc {
    return help;
    }
 }
-
