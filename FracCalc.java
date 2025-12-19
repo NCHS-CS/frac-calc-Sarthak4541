@@ -438,14 +438,14 @@ public class FracCalc {
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
    
-   // Gives the user some helpful tips to use the calculator easily
-   String help = "\nFraction Calculator Help\n";
-   help+= "Enter 2 numbers seperated by an arithmetic operator \n";
-   help+= "Make sure to put underscores to seperate mixed numbers\n";
-   help+= "Make sure to seperate fractions with slashes\n";
-   help+= "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc. For example, -2_1/4 + 2_1/2.";
-   help+= "Commands: 'help' - show help, 'quit' - exit program";
+      // Gives the user some helpful tips to use the calculator easily
+      String help = "\nFraction Calculator Help\n";
+      help+= "Enter 2 numbers seperated by an arithmetic operator \n";
+      help+= "Make sure to put underscores to seperate mixed numbers\n";
+      help+= "Make sure to seperate fractions with slashes\n";
+      help+= "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc. For example, -2_1/4 + 2_1/2.";
+      help+= "Commands: 'help' - show help, 'quit' - exit program";
 
-   return help;
+      return help;
    }
 }
