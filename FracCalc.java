@@ -5,7 +5,7 @@
 import java.util.*;
 
 // This is a fraction calculator that can perform arithmetic operations. The user will type in
-// two numbers with an operator and the program will perform the math and output the answer
+// two numbers with an operator and the program will perform the math and output the answer.
 
 public class FracCalc {
 
@@ -83,144 +83,266 @@ public class FracCalc {
    //        2 1/8
    //        2 1/4
    public static String processExpression(String input) {
+   
+   // Initalizes variables by calling respective methods
     String first_number = getFirstNumber(input);
     String operator = getOperator(input);
     String second_number = getSecondNumber(input);
 
+    // Converts the numbers to improper fractions by calling methods
     String frac1 = getImproperFrac(first_number);
     String frac2 = getImproperFrac(second_number);
 
+    //Stores numerator and denominator of each fraction
     int improper_num1 = getNumerator(frac1);
     int improper_num2 = getNumerator(frac2);
 
     int den1 = getDenominator(frac1);
     int den2 = getDenominator(frac2);
 
+   // Calls the performOperations method to return the final fraction
     String resultFrac = performOperations(improper_num1, improper_num2, den1, den2, operator);
 
+    // Gets numerator and denominator of the final fraction
     int finalNum = getNumerator(resultFrac);
     int finalDen = getDenominator(resultFrac);
 
+    // Calls the formatFraction method to reduce to lowest terms,
+    //  handle edge cases, and give the fraction as a mixed number
     return formatFraction(finalNum, finalDen);
    }
 
-   public static int getWhole(String second_number){
-      if (second_number.indexOf("_")>=0){//mixed number
-         return Integer.parseInt(second_number.substring(0,second_number.indexOf("_")));
+   // The getWhole method returns the whole number part of an input
+    // getWhole takes 1 input
+    // String input - The method returns the whole number part of the actual parameter
+    // return type is int, since it needs to return an integer (whole number)
+    
+   public static int getWhole(String input){
+
+      // If the input contains a "_", meaning it's a mixed number
+      if (input.indexOf("_")>=0){
+         return Integer.parseInt(input.substring(0,input.indexOf("_")));
       }
-      else if (second_number.indexOf("/")>=0){//fraction
+      // If the input contains a "/", meaning it's a fraction
+      else if (input.indexOf("/")>=0){
          return 0;
       }
+      // If input is a whole numer
       else{ 
-         return Integer.parseInt(second_number);
+         return Integer.parseInt(input);
       }
    } 
 
-   public static int getNum(String second_number){
-      if (second_number.indexOf("_")>=0){//mixed number
-         return Integer.parseInt(second_number.substring(second_number.indexOf("_")+1,second_number.indexOf("/")));
+   // The getNum method returns the numerator of an input
+   // getNum takes 1 input
+   // String input - The method returns the numerator part of the actual parameter
+   // return type is int, since it needs to return an integer (numerator of the fraction)
+
+   public static int getNum(String input){
+
+      // If the input contains a "_", meaning it's a mixed number
+      if (input.indexOf("_")>=0){
+         return Integer.parseInt(input.substring(input.indexOf("_")+1,input.indexOf("/")));
       }
-      else if (second_number.indexOf("/")>=0){//fraction
-         return Integer.parseInt(second_number.substring(0, second_number.indexOf("/")));
+      // If the input contains a "/", meaning it's a fraction
+      else if (input.indexOf("/")>=0){//fraction
+         return Integer.parseInt(input.substring(0, input.indexOf("/")));
       }
+      // If input is a whole number
       else{ 
          return 0;
       }
    }
-      
-   public static int getDen(String second_number){
-      if (second_number.indexOf("/")>=0){
-         return Integer.parseInt(second_number.substring(second_number.indexOf("/")+1));
+   
+   // The getDen method returns the denominator of an input
+   // getDen takes 1 input
+   // String input - The method returns the denominator part of the actual parameter
+   // return type is int, since it needs to return an integer (denominator of the fraction)
+
+   public static int getDen(String input){
+
+      // If the input contains a "/", meaning it's a fraction
+      if (input.indexOf("/")>=0){
+         return Integer.parseInt(input.substring(input.indexOf("/")+1));
       }
+      // If it is a whole number ( this method doesn't need to worry about mixed numbers,
+      // since it is only called for improper fractions)
       else{
          return 1;
       }
    } 
 
-   
+   // The getGCF method returns the greatest commmon factor of two numbers
+   //  It is used for reducing fractions to lowest tems
+   // getGCF takes 2 inputs
+   // These inputs are the two numbers it takes a GCF of
+   // return type is int, since it needs to return an integer (GCF of the numbers)
+
    public static int getGCF(int a, int b){
+
+      // Sets gcf to 1 initially
       int gcf = 1;
+
+      // For all value less than the lower number of a and b
+      // If any number i is divisible by both a and b, it sets gcf to i
       for (int i=1; i<=Math.min(a,b); i++){
          if (a%i == 0 && b%i == 0){
             gcf = i;
          }
       }
+      // Returns gcf
       return gcf;
    }
+   
+   // The getImproperFrac method returns a mixed number as an improper fraction
+   // getImproperFrac takes 1 input
+   // String input - The method turns the value of this parameter as an improper fraction
+   // return type is String, since it needs to return a fraction (such as 72/15, 56/11, etc.)
 
-   public static String getImproperFrac(String output){
-      int whole = getWhole(output);
-      int num = getNum(output);
-      int den = getDen(output);
+   public static String getImproperFrac(String input){
 
+      // Initalizes variables by calling respective methods
+      int whole = getWhole(input);
+      int num = getNum(input);
+      int den = getDen(input);
+
+      // If denominator is 0, it prevents an error by returning 0/0 which later gets handled by the formatFraction method
       if (den==0){
          return "0/0";
       }
-
+      // Gets improper fraction
       int improperNum = Math.abs(whole) * den + num;
 
+      // Handles the case if whole number is negative
       if (whole<0){
          improperNum *=-1;
-      } 
-
+      }
+      // Handles the case if denominator
       if (den<0){
          den*=-1;
          improperNum *=-1;
       }
       
+      // Returns the improper fraction as a String
       return improperNum + "/" + den;
    }
 
+   // The performOperations method handles most of the math in the program
+   // getImproperFrac takes 5 inputs
+   // int num1 - This is the numerator of the first fraction
+   // int num2 - This is the numerator of the second fraction
+   // int den1 - This is the denominator of the first fraction
+   // int den2 - This is the denominator of the second fraction
+   // String operator - This is the operation that needs to be performed (+, -, *, /)
+   // return type is String, since it needs to return a fraction after operations are performed
+
    public static String performOperations(int num1, int num2, int den1, int den2, String operator){
       
+      // Initalizes numerator and denominator
       int num;
       int den;
 
-      if (operator.equals("+")){
+      // Performs math for each operator
+      // Assigns values to num and den based on the values of the fraction
+      if (operator.equals("+")){ // addition
          num = num1 * den2 + num2 * den1;
          den = den1 * den2;
-      } else if (operator.equals("-")){
+      } else if (operator.equals("-")){ // subtraction
          num = num1 * den2 - num2 * den1;
          den = den1 * den2;
-      } else if (operator.equals("*")){
+      } else if (operator.equals("*")){ // multiplication
          num = num1 * num2;
          den = den1 * den2;
-      } else{
-         if (num2==0){
+      } else{ // division
+         // If any denominators are 0, it returns 0/0 (preventing an error) which is later handled by formatFraction
+         if (den1 == 0 || den2==0){
             return "0/0";
          }
+         // Otherwise, it performs division like normal
          num = num1 * den2;
          den = den1 * num2;
       }
+
+      // Returns an improperFraction as a String
       return num + "/" + den;
    }
 
+   // The getOperator method returns the operation which needs to be performed (+, -, *, /)
+   // getImproperFrac takes 1 input
+   // String input - This is the user's input containing both fractions and an operator (for example: -2_1/4 + 4_1/3)
+   // return type is String, since it needs to return an operator
+
    public static String getOperator(String input){
+
+      // Finds the index position of the first space
       int space1 = input.indexOf(" ");
-      return input.substring(space1 + 1, space1 + 2);
+
+      // Takes a substring from space1+1 to space1+2, which saves the character directly after space1 as the operator
+      String operator = input.substring(space1 + 1, space1 + 2);
+
+      // returns operator as a String
+      return operator;
 
    }
 
+   // The getFirstNumber method returns the first number from the user's input
+   // getFirstNumber takes 1 input
+   // String input - This is the user's input containing both fractions and an operator (for example: -2_1/4 + 4_1/3)
+   // return type is String, since it needs to return the first number from the input
    public static String getFirstNumber(String input){
+
+      // Finds the index position of the first space
       int space1 = input.indexOf(" ");
-      return input.substring(0, space1);
+
+      // Takes a substring from 0 to space1, which will give all characters before space1
+      // Assigns it to firstNumber
+      String firstNumber = input.substring(0, space1);
+
+      // Returns firstNumber as a String
+      return firstNumber;
    }
 
+   // The getSecondNumber method returns the second number from the user's input
+   // getSecondNumber takes 1 input
+   // String input - This is the user's input containing both fractions and an operator (for example: -2_1/4 + 4_1/3)
+   // return type is String, since it needs to return the second number from the input
    public static String getSecondNumber(String input){
-      int space1 = input.indexOf(" ");
-      
-      int space2 = space1 + 1;
-      while (space2 < input.length() && input.charAt(space2) != ' ') {
-         space2++;
-      }
 
-      return input.substring(space2 + 1);
+      // Finds the index position of the first space
+      int space1 = input.indexOf(" ");
+
+      // Assuming user's input is well formed, space 2 is 2 characters after space 1
+      // Assigns space 2 to space1 + 2
+      int space2 = space1 + 2;
+
+      // The second number is anything after space2
+      // Assigns any characters after space2 to secondNumber
+      String secondNumber = input.substring(space2 + 1);
+
+      // Returns secondNumber as a String
+      return secondNumber;
    }
+
+   // The getNumerator method returns the numerator of a fraction
+   // getNumerator takes 1 input
+   // String frac - This is the improper fraction returned by the getImproperFrac method
+   // This method returns the numerator of that fraction
+   // return type is int, since it needs to return the numerator
 
    public static int getNumerator(String frac) {
-      return Integer.parseInt(frac.substring(0, frac.indexOf("/")));
+
+      // Finds the index position of the slash character and stores it in indexOfSlash
+      int indexOfSlash = frac.indexOf("/");
+
+      // Takes a substring from 0 to the slash character, which is equivalent to the numerator
+      // Assigns it to the String numerator
+      String numerator = frac.substring(0, indexOfSlash);
+
+      // Returns numerator as an integer (Implicitly casts from String to int)
+      return Integer.parseInt(numerator);
    }
 
+   
    public static int getDenominator(String frac) {
       return Integer.parseInt(frac.substring(frac.indexOf("/") + 1));
    }
