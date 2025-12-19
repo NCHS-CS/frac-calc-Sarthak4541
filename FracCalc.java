@@ -47,6 +47,7 @@ public class FracCalc {
    // Return the full line that the user typed in.
    public static String getInput() {
       
+      // This gets the input and returns the value
       System.out.println("Enter: ");
       return console.nextLine();
 
@@ -85,35 +86,35 @@ public class FracCalc {
    public static String processExpression(String input) {
    
    // Initalizes variables by calling respective methods
-    String first_number = getFirstNumber(input);
-    String operator = getOperator(input);
-    String second_number = getSecondNumber(input);
+      String first_number = getFirstNumber(input);
+      String operator = getOperator(input);
+      String second_number = getSecondNumber(input);
 
-    // Converts the numbers to improper fractions by calling methods
-    String frac1 = getImproperFrac(first_number);
-    String frac2 = getImproperFrac(second_number);
+      // Converts the numbers to improper fractions by calling methods
+      String frac1 = getImproperFrac(first_number);
+      String frac2 = getImproperFrac(second_number);
 
-    //Stores numerator and denominator of each fraction
-    int improper_num1 = getNumerator(frac1);
-    int improper_num2 = getNumerator(frac2);
+      //Stores numerator and denominator of each fraction
+      int improper_num1 = getNumerator(frac1);
+      int improper_num2 = getNumerator(frac2);
 
-    int den1 = getDenominator(frac1);
-    int den2 = getDenominator(frac2);
+      int den1 = getDenominator(frac1);
+      int den2 = getDenominator(frac2);
 
-   // Calls the performOperations method to return the final fraction
-    String resultFrac = performOperations(improper_num1, improper_num2, den1, den2, operator);
+      // Calls the performOperations method to return the final fraction
+      String resultFrac = performOperations(improper_num1, improper_num2, den1, den2, operator);
 
-    // Gets numerator and denominator of the final fraction
-    int finalNum = getNumerator(resultFrac);
-    int finalDen = getDenominator(resultFrac);
+      // Gets numerator and denominator of the final fraction
+      int finalNum = getNumerator(resultFrac);
+      int finalDen = getDenominator(resultFrac);
 
-    // Calls the formatFraction method to reduce to lowest terms,
-    //  handle edge cases, and give the fraction as a mixed number
-    return formatFraction(finalNum, finalDen);
+      // Calls the formatFraction method to reduce to lowest terms,
+      //  handle edge cases, and give the fraction as a mixed number
+      return formatFraction(finalNum, finalDen);
    }
 
    // The getWhole method returns the whole number part of an input
-    // getWhole takes 1 input
+    // getWhole takes 1 parameter
     // String input - The method returns the whole number part of the actual parameter
     // return type is int, since it needs to return an integer (whole number)
     
@@ -134,7 +135,7 @@ public class FracCalc {
    } 
 
    // The getNum method returns the numerator of an input
-   // getNum takes 1 input
+   // getNum takes 1 parameter
    // String input - The method returns the numerator part of the actual parameter
    // return type is int, since it needs to return an integer (numerator of the fraction)
 
@@ -155,7 +156,7 @@ public class FracCalc {
    }
    
    // The getDen method returns the denominator of an input
-   // getDen takes 1 input
+   // getDen takes 1 parameter
    // String input - The method returns the denominator part of the actual parameter
    // return type is int, since it needs to return an integer (denominator of the fraction)
 
@@ -174,7 +175,7 @@ public class FracCalc {
 
    // The getGCF method returns the greatest commmon factor of two numbers
    //  It is used for reducing fractions to lowest tems
-   // getGCF takes 2 inputs
+   // getGCF takes 2 parameters
    // These inputs are the two numbers it takes a GCF of
    // return type is int, since it needs to return an integer (GCF of the numbers)
 
@@ -195,7 +196,7 @@ public class FracCalc {
    }
    
    // The getImproperFrac method returns a mixed number as an improper fraction
-   // getImproperFrac takes 1 input
+   // getImproperFrac takes 1 parameter
    // String input - The method turns the value of this parameter as an improper fraction
    // return type is String, since it needs to return a fraction (such as 72/15, 56/11, etc.)
 
@@ -228,7 +229,7 @@ public class FracCalc {
    }
 
    // The performOperations method handles most of the math in the program
-   // getImproperFrac takes 5 inputs
+   // getImproperFrac takes 5 parameters
    // int num1 - This is the numerator of the first fraction
    // int num2 - This is the numerator of the second fraction
    // int den1 - This is the denominator of the first fraction
@@ -268,7 +269,7 @@ public class FracCalc {
    }
 
    // The getOperator method returns the operation which needs to be performed (+, -, *, /)
-   // getImproperFrac takes 1 input
+   // getImproperFrac takes 1 parameters
    // String input - This is the user's input containing both fractions and an operator (for example: -2_1/4 + 4_1/3)
    // return type is String, since it needs to return an operator
 
@@ -286,7 +287,7 @@ public class FracCalc {
    }
 
    // The getFirstNumber method returns the first number from the user's input
-   // getFirstNumber takes 1 input
+   // getFirstNumber takes 1 parameters
    // String input - This is the user's input containing both fractions and an operator (for example: -2_1/4 + 4_1/3)
    // return type is String, since it needs to return the first number from the input
    public static String getFirstNumber(String input){
@@ -303,7 +304,7 @@ public class FracCalc {
    }
 
    // The getSecondNumber method returns the second number from the user's input
-   // getSecondNumber takes 1 input
+   // getSecondNumber takes 1 parameter
    // String input - This is the user's input containing both fractions and an operator (for example: -2_1/4 + 4_1/3)
    // return type is String, since it needs to return the second number from the input
    public static String getSecondNumber(String input){
@@ -324,7 +325,7 @@ public class FracCalc {
    }
 
    // The getNumerator method returns the numerator of a fraction
-   // getNumerator takes 1 input
+   // getNumerator takes 1 parameter
    // String frac - This is the improper fraction returned by the getImproperFrac method
    // This method returns the numerator of that fraction
    // return type is int, since it needs to return the numerator
@@ -342,51 +343,92 @@ public class FracCalc {
       return Integer.parseInt(numerator);
    }
 
-   
+   // The getDenominator method returns the denominator of a fraction
+   // getDenominator takes 1 parameter
+   // String frac - This is the improper fraction returned by the getImproperFrac method
+   // This method returns the denominator of that fraction
+   // return type is int, since it needs to return the denominator
+
    public static int getDenominator(String frac) {
-      return Integer.parseInt(frac.substring(frac.indexOf("/") + 1));
+
+      // Finds the index position of the slash character and stores it in indexOfSlash
+      int indexOfSlash = frac.indexOf("/");
+
+      // Takes a substring from the slash chracter to the end which is equivalent to the denominator
+      // Assigns it to the String denominator
+      String denominator = frac.substring(indexOfSlash+ 1);
+
+      // Returns denominator as an integer (Implicitly casts from String to int)
+      return Integer.parseInt(denominator);
    }
    
+   // The formatFraction method returns the finalFraction, after handling all exceptions and simplifying to lowest terms
+   // formatFraction takes 2 parameters
+   // int finalNum - This variable stores the numerator of the final fraction
+   // int finalDen - This variable stores the denominator of the final fraction
+   // return type is String, since it returns the final fraction
+
    public static String formatFraction(int finalNum, int finalDen) {
 
-    if (finalDen == 0) {
-        return "ERROR: Division by zero";
-    }
-    if (finalNum == 0) {
-        return "0";
-    }
-    if (finalDen < 0) {
-        finalDen *= -1;
-        finalNum *= -1;
-    }
+      // Prevents division by 0
+      if (finalDen == 0) {
+         return "ERROR: Division by zero";
+      }
+      // If answer is a whole number, returns 0
+      if (finalNum == 0) {
+         return "0";
+      }
+      // Normalizes fraction by preventing negative denominators
+      if (finalDen < 0) {
+         finalDen *= -1;
+         finalNum *= -1;
+      }
+      // Simplifies to lowest terms by finding gcf & diving finalNum and finalDen by gcf
+      int gcf = getGCF(Math.abs(finalNum), Math.abs(finalDen));
+      finalNum /= gcf;
+      finalDen /= gcf;
 
-    int gcf = getGCF(Math.abs(finalNum), Math.abs(finalDen));
-    finalNum /= gcf;
-    finalDen /= gcf;
+      // Rewrites improper fraction as mixed number
+      int whole = finalNum / finalDen;
+      int remainder = Math.abs(finalNum) % finalDen;
 
-    int whole = finalNum / finalDen;
-    int remainder = Math.abs(finalNum) % finalDen;
+      // Calls the handleEdgeCases and assigns result to String output
+      String output = handleEdgeCases(whole, remainder, finalDen, finalNum);
 
-    String output = handleEdgeCases(whole, remainder, finalDen, finalNum);
-
-    return output;
-    
+      // Returns the final output
+      return output;
    }
+
+   // The handleEdgeCases method handles a few edge cases 
+   // when converting the improper fraction back to a mixed number
+   // handleEdgeCases takes 4 parameters
+   // int whole - This variable stores the whole number part of the final fraction
+   // int remainder - This variable stores the remainder (which is actually just the final numerator)
+   // int finalNum - This variable stores the numerator of the improper fraction
+   // int finalDen - This variable stores the denominator of the final fraction
+   // return type is String, since it returns the final fraction
 
    public static String handleEdgeCases(int whole, int remainder, int finalDen, int finalNum) {
       
+      // If the answer is just a whole number, it only returns the whole
       if (remainder == 0) {
          return whole + "";
       }
 
+      // If there is no whole number (just a fraction)
       if (whole == 0) {
+
+         // If the numerator is negative, it adds a minus sign
          if (finalNum < 0) {
                return "-" + remainder + "/" + finalDen;
-         } else {
+         } 
+         // Else, it just returns the fraction without a minus sign
+         else {
                return remainder + "/" + finalDen;
          }
       }
 
+      // Returns the final fraction
       return whole + " " + remainder + "/" + finalDen;
    }
 
@@ -395,11 +437,15 @@ public class FracCalc {
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
    
-     
-      String help = "Enter 2 numbers seperated by an arithmetic operator \n";
-      help += "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc. For example, -2_1/4 + 2_1/2.";
-      
-      return help;
+   // Gives the user some helpful tips to use the calculator easily
+   String help = "\nFraction Calculator Help\n";
+   help+= "Enter 2 numbers seperated by an arithmetic operator \n";
+   help+= "Make sure to put underscores to seperate mixed numbers\n";
+   help+= "Make sure to seperate fractions with slashes\n";
+   help+= "Try to format the mixed numbers in the following form: 2_1/2, 3/4, etc. For example, -2_1/4 + 2_1/2.";
+   help+= "Commands: 'help' - show help, 'quit' - exit program";
+
+   return help;
    }
 }
 
