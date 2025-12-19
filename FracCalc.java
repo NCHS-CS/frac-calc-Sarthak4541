@@ -412,6 +412,7 @@ public class FracCalc {
       
       // If the answer is just a whole number, it only returns the whole
       if (remainder == 0) {
+         // returns whole as a String (implicitly casts from int to String)
          return whole + "";
       }
 
